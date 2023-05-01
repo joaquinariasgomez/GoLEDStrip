@@ -7,3 +7,5 @@ run:
 .PHONY: deps
 deps:
 	$(GO) mod tidy
+
+# Para ejecutar: sudo go run src/main.go

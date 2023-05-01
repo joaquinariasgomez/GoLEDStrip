@@ -7,9 +7,9 @@ import (
 )
 
 const (
-	brightness = 90
-	ledCounts  = 64
-	sleepTime  = 50
+	brightness = 255
+	ledCounts  = 300
+	sleepTime  = 10
 )
 
 type wsEngine interface {
@@ -47,6 +47,26 @@ func (cw *colorWipe) display(color uint32) error {
 
 func StartLedStrip() {
 	fmt.Println("Starting LED Strip!")
+	// opt := ws2811.DefaultOptions
+	// opt.Channels[0].Brightness = brightness
+	// opt.Channels[0].LedCount = ledCounts
+
+	// dev, err := ws2811.MakeWS2811(&opt)
+	// checkError(err)
+
+	// cw := &colorWipe{
+	// 	ws: dev,
+	// }
+	// checkError(cw.setup())
+	// defer dev.Fini()
+
+	// cw.display(uint32(0x0000ff))
+	// cw.display(uint32(0x00ff00))
+	// cw.display(uint32(0xff0000))
+	// cw.display(uint32(0x000000))
+}
+
+func WipeBlue() {
 	opt := ws2811.DefaultOptions
 	opt.Channels[0].Brightness = brightness
 	opt.Channels[0].LedCount = ledCounts
@@ -61,7 +81,21 @@ func StartLedStrip() {
 	defer dev.Fini()
 
 	cw.display(uint32(0x0000ff))
-	cw.display(uint32(0x00ff00))
+}
+
+func WipeRed() {
+	opt := ws2811.DefaultOptions
+	opt.Channels[0].Brightness = brightness
+	opt.Channels[0].LedCount = ledCounts
+
+	dev, err := ws2811.MakeWS2811(&opt)
+	checkError(err)
+
+	cw := &colorWipe{
+		ws: dev,
+	}
+	checkError(cw.setup())
+	defer dev.Fini()
+
 	cw.display(uint32(0xff0000))
-	cw.display(uint32(0x000000))
 }

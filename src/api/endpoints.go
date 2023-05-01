@@ -11,3 +11,13 @@ func HomePage(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Endpoint Hit: homePage")
 	ledstrip.StartLedStrip()
 }
+
+func WipeBlue(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Golpeado endpoint blue!")
+	ledstrip.WipeBlue()
+}
+
+func WipeRed(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Golpeado endpoint red!")
+	ledstrip.WipeRed()
+}

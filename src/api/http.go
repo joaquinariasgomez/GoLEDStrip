@@ -9,6 +9,8 @@ import (
 
 func setEndpoints() {
 	http.HandleFunc("/", HomePage)
+	http.HandleFunc("/blue", WipeBlue)
+	http.HandleFunc("/red", WipeRed)
 }
 
 func HandleRequests() {
@@ -16,6 +18,6 @@ func HandleRequests() {
 	fmt.Println("We are currently running in port",PORT)
 
 	setEndpoints()
-	
+
 	log.Fatal(http.ListenAndServe(":"+PORT, nil))
 }
