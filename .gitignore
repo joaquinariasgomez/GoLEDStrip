@@ -1,0 +1,8 @@
+# Go
+/bin
+/src/pkg
+/vendor/
+*.tar.gz
+
+# VsCode
+/.vscode
