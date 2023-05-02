@@ -48,6 +48,15 @@ func WipeAction() {
 	device.waveAnimation()
 }
 
+func PulsateAction() {
+	device := GetDeviceInstance()
+	if !device.isInitialized {
+		return
+	}
+
+	go device.breathingAnimation()
+}
+
 func PrintDeviceStatus() {
 	device := GetDeviceInstance()
 	fmt.Println(device)
@@ -68,6 +77,8 @@ func StartDevice() {
 		panic(err)
 	}
 
+	// Default config for device
+	dev.ledDisp = OnlyBack
 	dev.engine = engine
 	if err = dev.engine.Init(); err == nil {
 		dev.isInitialized = true
@@ -105,4 +116,9 @@ func ExampleWipe() {
 	// cw.display(uint32(0x00ff00))
 	// cw.display(uint32(0xff0000))
 	// cw.display(uint32(0x000000))
+}
+
+func ExamplePulsate() {
+	StartDevice()
+	PulsateAction()
 }
