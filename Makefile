@@ -1,4 +1,4 @@
-GO=GOFLAGS=-mod=vendor go
+GO=go
 
 .PHONY: run
 run:
