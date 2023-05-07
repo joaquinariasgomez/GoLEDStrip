@@ -8,37 +8,6 @@ import (
 	ws2811 "github.com/rpi-ws281x/rpi-ws281x-go"
 )
 
-const (
-	sleepTime = 10
-)
-
-// type wsEngine interface {
-// 	Init() error
-// 	Render() error
-// 	Wait() error
-// 	Fini()
-// 	Leds(channel int) []uint32
-// }
-
-// type colorWipe struct {
-// 	ws wsEngine
-// }
-
-// func (cw *colorWipe) setup() error {
-// 	return cw.ws.Init()
-// }
-
-// func (cw *colorWipe) display(color uint32) error {
-// 	for i := 0; i < len(cw.ws.Leds(0)); i++ {
-// 		cw.ws.Leds(0)[i] = color
-// 		if err := cw.ws.Render(); err != nil {
-// 			return err
-// 		}
-// 		time.Sleep(sleepTime * time.Millisecond)
-// 	}
-// 	return nil
-// }
-
 func WipeAction() {
 	device := GetDeviceInstance()
 	if !device.isInitialized {

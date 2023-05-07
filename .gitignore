@@ -4,5 +4,6 @@
 /src/vendor/
 /src/*.tar.gz
 
-# VsCode
+# IDEs
 /.vscode
+.idea
