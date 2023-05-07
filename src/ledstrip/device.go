@@ -33,8 +33,34 @@ const (
 type device struct {
 	engine        wsEngine
 	isInitialized bool
+	state         string
 	ledDisp       ledDispEnum
 	currentMode   modeEnum
+}
+
+func (dv *device) testAnimation() error {
+	dv.state = "running"
+
+	startLed := 0
+	endLed := len(dv.engine.Leds(0)) - 1
+	switch dv.ledDisp {
+	case OnlyBack:
+		startLed = 20
+		endLed -= 20
+	}
+
+	for led := startLed; led <= endLed; led++ {
+		dv.engine.Leds(0)[led] = uint32(0x0000ff)
+		/*if err := dv.engine.Render(); err != nil {
+			return err
+		}*/
+		if dv.state == "stop" {
+			break
+		}
+		time.Sleep(25 * time.Millisecond)
+	}
+
+	return nil
 }
 
 func (dv *device) waveAnimation() error {

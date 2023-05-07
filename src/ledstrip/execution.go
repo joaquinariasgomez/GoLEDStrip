@@ -13,10 +13,8 @@ type execution struct {
 }
 
 func (e *execution) StartTask(a Action) {
-	// Crea un job con la accion asignada y la ejecuta
-	// Primero comprueba si hay algún job activo. Si es asi, manda una orden para pararlo
-	// Luego, espera a que esté muerto el wg e inicia el nuevo job
-	// No hay ningún job creado, así que toca crear uno
+	// If there are no jobs, it will create and launch one
+	// Otherwise, it will stop the current job and launch another
 	if e.currentJob.ID == "" {
 		e.createAndLaunchJob(a)
 	} else {
@@ -40,7 +38,10 @@ func (e *execution) createAndLaunchJob(a Action) {
 }
 
 func (e *execution) stopAndLaunchJob(a Action) {
-	e.currentJob.Stop()
+	// Stop current execution if it isn't already
+	if e.currentJob.status != "stopped" {
+		e.currentJob.Stop()
+	}
 	// Wait for the current execution to finish
 	e.currentJob.wg.Wait()
 	e.createAndLaunchJob(a)

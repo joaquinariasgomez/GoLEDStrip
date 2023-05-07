@@ -1,8 +1,6 @@
 package ledstrip
 
 import (
-	"fmt"
-
 	. "goledserver/src/constants"
 
 	ws2811 "github.com/rpi-ws281x/rpi-ws281x-go"
@@ -17,6 +15,24 @@ func WipeAction() {
 	device.waveAnimation()
 }
 
+func TestAction(a Action) {
+	StartDevice() // TODO: eliminar de aqui
+	device := GetDeviceInstance()
+	if !device.isInitialized {
+		return
+	}
+
+	// Aqui iria la desencriptación del objeto "Action"
+	// para enviarle a device el setup exacto
+
+	device.testAnimation()
+}
+
+func SetStopState() {
+	device := GetDeviceInstance()
+	device.state = "stop"
+}
+
 func PulsateAction() {
 	device := GetDeviceInstance()
 	if !device.isInitialized {
@@ -24,11 +40,6 @@ func PulsateAction() {
 	}
 
 	go device.breathingAnimation()
-}
-
-func PrintDeviceStatus() {
-	device := GetDeviceInstance()
-	fmt.Println(device)
 }
 
 func StartDevice() {
@@ -63,28 +74,10 @@ func ShutdownDevice() {
 }
 
 func ExampleWipe() {
+	// TODO: mover StartDevice() al startup sequence, donde solo sería llamado una vez
+	// Esta función settea la configuración del singleton device, luego no hace falta llamarla por cada método
 	StartDevice()
 	WipeAction()
-	// ShutdownDevice()
-
-	// fmt.Println("Starting LED Strip!")
-	// opt := ws2811.DefaultOptions
-	// opt.Channels[0].Brightness = brightness
-	// opt.Channels[0].LedCount = ledCounts
-
-	// dev, err := ws2811.MakeWS2811(&opt)
-	// checkError(err)
-
-	// cw := &colorWipe{
-	// 	ws: dev,
-	// }
-	// checkError(cw.setup())
-	// defer dev.Fini()
-
-	// cw.display(uint32(0x0000ff))
-	// cw.display(uint32(0x00ff00))
-	// cw.display(uint32(0xff0000))
-	// cw.display(uint32(0x000000))
 }
 
 func ExamplePulsate() {
