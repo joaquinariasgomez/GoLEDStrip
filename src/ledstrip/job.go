@@ -16,7 +16,11 @@ type Action struct {
 }
 
 func (j *Job) Start() {
-	fmt.Println("Comenzando acción...", j.Action)
+	fmt.Printf("Comenzando job %v con acción %v\n", j.ID, j.Action)
 	time.Sleep(time.Second * 3)
-	fmt.Println("Terminando acción")
+	fmt.Printf("Terminando job %v\n", j.ID)
+}
+
+func (j *Job) Stop() {
+	fmt.Printf("Parando job %v\n", j.ID)
 }

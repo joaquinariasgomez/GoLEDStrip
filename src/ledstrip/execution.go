@@ -14,6 +14,8 @@ func (e *execution) StartTask(a Action) {
 	// No hay ningún job creado, así que toca crear uno
 	if e.currentJob.ID == "" {
 		e.createAndLaunchJob(a)
+	} else {
+		e.stopAndLaunchJob(a)
 	}
 }
 
@@ -28,6 +30,11 @@ func (e *execution) createAndLaunchJob(a Action) {
 
 	e.currentJob = newJob
 	e.currentJob.Start()
+}
+
+func (e *execution) stopAndLaunchJob(a Action) {
+	e.currentJob.Stop()
+	e.createAndLaunchJob(a)
 }
 
 var executionInstance *execution
