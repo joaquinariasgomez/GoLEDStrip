@@ -38,7 +38,6 @@ func GetAction(w http.ResponseWriter, r *http.Request) {
 }
 
 func PostAction(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Recibida petición de acción")
 	defer r.Body.Close()
 	w.Header().Set("Content-Type", "application/json")
 

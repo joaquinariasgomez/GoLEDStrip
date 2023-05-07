@@ -6,8 +6,13 @@ function sample-get() {
 
 function sample-post() {
     echo $1
-    body=`cat sample-post-action.json`
-    curl -X POST localhost:8888/action -d "$body"
+    if [[ "$1" == 1 ]]; then
+      body=`cat post-office-lights.json`
+      curl -X POST localhost:8888/action -d "$body"
+    else
+      body=`cat post-decrease-brightness.json`
+      curl -X POST localhost:8888/action -d "$body"
+    fi
 }
 
 while getopts 'p:gh' opt; do
