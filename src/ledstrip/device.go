@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-var lock = &sync.Mutex{}
+var deviceLock = &sync.Mutex{}
 
 type wsEngine interface {
 	Init() error
@@ -100,8 +100,8 @@ var deviceInstance *device
 
 func GetDeviceInstance() *device {
 	if deviceInstance == nil {
-		lock.Lock()
-		defer lock.Unlock()
+		deviceLock.Lock()
+		defer deviceLock.Unlock()
 
 		if deviceInstance == nil {
 			deviceInstance = &device{}

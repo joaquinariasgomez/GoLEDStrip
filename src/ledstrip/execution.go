@@ -1,6 +1,11 @@
 package ledstrip
 
-import uuid "github.com/satori/go.uuid"
+import (
+	uuid "github.com/satori/go.uuid"
+	"sync"
+)
+
+var executionLock = &sync.Mutex{}
 
 type execution struct {
 	currentJob Job
@@ -41,8 +46,8 @@ var executionInstance *execution
 
 func GetExecutionInstance() *execution {
 	if executionInstance == nil {
-		lock.Lock()
-		defer lock.Unlock()
+		executionLock.Lock()
+		defer executionLock.Unlock()
 
 		if executionInstance == nil {
 			executionInstance = &execution{}
