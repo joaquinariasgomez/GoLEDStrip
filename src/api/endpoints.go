@@ -10,7 +10,6 @@ import (
 
 func HomePage(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Endpoint Hit: homePage")
-	ledstrip.PrintDeviceStatus()
 }
 
 func Action(w http.ResponseWriter, r *http.Request) {

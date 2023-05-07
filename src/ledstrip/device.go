@@ -20,9 +20,9 @@ type ledDispEnum string
 type modeEnum string
 
 const (
-	OnlyBack  ledDispEnum = "onlyback"
-	OnlySides ledDispEnum = "onlysides"
-	Full      ledDispEnum = "full"
+	OnlyBack ledDispEnum = "onlyback"
+	OnlySide ledDispEnum = "onlysides"
+	Full     ledDispEnum = "full"
 )
 
 const (
