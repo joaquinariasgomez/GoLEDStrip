@@ -2,22 +2,31 @@ package api
 
 import (
 	"fmt"
+	. "goledserver/src/constants"
 	"log"
 	"net/http"
-	. "goledserver/src/constants"
 )
 
-func setEndpoints() {
-	http.HandleFunc("/", HomePage)
-	http.HandleFunc("/blue", WipeBlue)
-	http.HandleFunc("/red", WipeRed)
-}
+// func setEndpoints() {
+// 	mux.HandleFunc("/", HomePage)
+// 	mux.HandleFunc("/action", GetAction).Methods("GET")
+// 	mux.HandleFunc("/action", PostAction).Methods("POST")
+// }
 
 func HandleRequests() {
 	fmt.Println("Hi! Welcome to Go LED Strip Service :)")
-	fmt.Println("We are currently running in port",PORT)
+	fmt.Println("We are currently running in port", PORT)
 
-	setEndpoints()
+	mux := http.NewServeMux()
 
-	log.Fatal(http.ListenAndServe(":"+PORT, nil))
+
+	mux.HandleFunc("/randomFloat", func(w http.ResponseWriter,
+		r *http.Request) {
+		 fmt.Fprintln(w, 5.78)
+		})
+	// setEndpoints(mux)
+	//mux.HandleFunc("/", HomePage)
+	// mux.HandleFunc("/action", PostAction).Methods("POST")
+
+	log.Fatal(http.ListenAndServe(":"+PORT, mux))
 }

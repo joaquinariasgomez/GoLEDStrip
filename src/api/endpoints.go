@@ -11,12 +11,12 @@ func HomePage(w http.ResponseWriter, r *http.Request) {
 	ledstrip.PrintDeviceStatus()
 }
 
-func WipeBlue(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Golpeado endpoint blue!")
+func GetAction(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Recibida acción GET:", r)
 	ledstrip.ExampleWipe()
 }
 
-func WipeRed(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Golpeado endpoint red!")
-	ledstrip.ExamplePulsate()
+func PostAction(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Recibida acción POST:", r)
+	ledstrip.ExampleWipe()
 }
