@@ -68,8 +68,10 @@ func (dv *device) breathingAnimation() error {
 	}
 
 	minBright := 100
-	maxBright := 200
+	maxBright := 255
 	color := uint32(0xffffff)
+	// black := uint32(0x0)
+	// otherColor := uint32(0xffff00)
 	for led := startLed; led <= endLed; led++ {
 		dv.engine.Leds(0)[led] = color
 	}
@@ -80,14 +82,14 @@ func (dv *device) breathingAnimation() error {
 			if err := dv.engine.Render(); err != nil {
 				return err
 			}
-			time.Sleep(time.Millisecond / 2)
+			time.Sleep(time.Millisecond)
 		}
 		for bright := maxBright; bright >= minBright; bright-- {
 			dv.engine.SetBrightness(0, bright)
 			if err := dv.engine.Render(); err != nil {
 				return err
 			}
-			time.Sleep(time.Millisecond / 2)
+			time.Sleep(time.Millisecond)
 		}
 	}
 

@@ -69,8 +69,8 @@ func StartDevice() {
 	}
 
 	opt := ws2811.DefaultOptions
-	opt.Channels[0].Brightness = BRIGHTNESS
-	opt.Channels[0].LedCount = LED_COUNT
+	opt.Channels[0].Brightness = MAX_BRIGHTNESS
+	opt.Channels[0].LedCount = MAX_LEDS
 
 	engine, err := ws2811.MakeWS2811(&opt)
 	if err != nil {
@@ -78,7 +78,7 @@ func StartDevice() {
 	}
 
 	// Default config for device
-	dev.ledDisp = OnlyBack
+	dev.ledDisp = Full
 	dev.engine = engine
 	if err = dev.engine.Init(); err == nil {
 		dev.isInitialized = true
