@@ -14,3 +14,6 @@ Modes: "office-lights", ..
   "type": "set-mode",
   "mode": "office-lights"
   }
+
+## TODO
+- Quizás crear una extensión de Google Chrome, a modo de frontend. Usar la referencia https://www.youtube.com/playlist?list=PLC3y8-rFHvwg2-q6Kvw3Tl_4xhxtIaNlY

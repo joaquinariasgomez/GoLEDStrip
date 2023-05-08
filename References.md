@@ -1,2 +1,3 @@
 - Control of Led Strip using Go: https://github.com/rpi-ws281x/rpi-ws281x-go
 - Como unmarshalear de una request: https://dev.to/billylkc/parse-json-api-response-in-go-10ng
+- Tutorial para crear una extensión de Google Chrome: https://www.youtube.com/playlist?list=PLC3y8-rFHvwg2-q6Kvw3Tl_4xhxtIaNlY
