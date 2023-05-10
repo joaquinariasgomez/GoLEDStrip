@@ -57,7 +57,7 @@ func (dv *device) testAnimation() error {
 		if dv.state == "stop" {
 			break
 		}
-		time.Sleep(25 * time.Millisecond)
+		time.Sleep(5 * time.Millisecond)
 	}
 
 	return nil

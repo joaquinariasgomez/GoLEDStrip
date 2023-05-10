@@ -1,7 +1,7 @@
 package ledstrip
 
 import (
-	uuid "github.com/satori/go.uuid"
+	"fmt"
 	"sync"
 )
 
@@ -13,12 +13,32 @@ type execution struct {
 }
 
 func (e *execution) StartTask(a Action) {
-	// If there are no jobs, it will create and launch one
-	// Otherwise, it will stop the current job and launch another
-	if e.currentJob.ID == "" {
-		e.createAndLaunchJob(a)
+	// First, check what action type is being executed.
+	// If it is "set-brightness", it won't create new jobs.
+	if a.Type == "set-brightness" {
+		fmt.Println("Set brightness task")
+		// Idea: crear un job all que no se le va a esperar ni nada para settear el brightness
 	} else {
-		e.stopAndLaunchJob(a)
+		// If there are no jobs, it will create and launch one.
+		// Otherwise, it will stop the current job and launch another.
+		if e.currentJob.ID == "" {
+			newJob := new(Job)
+			newJob.Create(a)
+
+			e.currentJob = *newJob
+			e.currentJob.Start()
+		} else {
+			if e.currentJob.status != "stopped" {
+				e.currentJob.Stop()
+			}
+			newJob := new(Job)
+			newJob.Create(a)
+			// Wait for the current execution to finish
+			e.currentJob.wg.Wait()
+
+			e.currentJob = *newJob
+			e.currentJob.Start()
+		}
 	}
 }
 
@@ -26,7 +46,7 @@ func (e *execution) StopTask() {
 
 }
 
-func (e *execution) createAndLaunchJob(a Action) {
+/*func (e *execution) createJob(a Action) {
 	var newJob Job
 	newJob.ID = uuid.NewV4().String()
 	newJob.Action = a
@@ -35,9 +55,20 @@ func (e *execution) createAndLaunchJob(a Action) {
 
 	e.currentJob = newJob
 	e.currentJob.Start()
-}
+}*/
 
-func (e *execution) stopAndLaunchJob(a Action) {
+/*func (e *execution) createAndLaunchJob(a Action) {
+	var newJob Job
+	newJob.ID = uuid.NewV4().String()
+	newJob.Action = a
+	newJob.wg = sync.WaitGroup{}
+	newJob.wg.Add(1)
+
+	e.currentJob = newJob
+	e.currentJob.Start()
+}*/
+
+/*func (e *execution) stopAndLaunchJob(a Action) {
 	// Stop current execution if it isn't already
 	if e.currentJob.status != "stopped" {
 		e.currentJob.Stop()
@@ -45,7 +76,7 @@ func (e *execution) stopAndLaunchJob(a Action) {
 	// Wait for the current execution to finish
 	e.currentJob.wg.Wait()
 	e.createAndLaunchJob(a)
-}
+}*/
 
 var executionInstance *execution
 
