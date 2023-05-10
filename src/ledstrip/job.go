@@ -8,7 +8,7 @@ import (
 
 type Job struct {
 	ID     string
-	wg     sync.WaitGroup
+	wg     *sync.WaitGroup
 	status string
 	Action Action
 }
@@ -22,10 +22,10 @@ func (j *Job) Create(a Action) {
 	j.status = "waiting"
 	j.ID = uuid.NewV4().String()
 	j.Action = a
-	j.wg = sync.WaitGroup{}
+	j.wg = &sync.WaitGroup{}
 	j.wg.Add(1)
 
-	fmt.Printf("> Creando job %v en estado %s con acción %v\n", j.ID, j.status, j.Action)
+	//fmt.Printf("> Creando job %v en estado %s con acción %v\n", j.ID, j.status, j.Action)
 }
 
 func (j *Job) Start() {
@@ -34,7 +34,7 @@ func (j *Job) Start() {
 
 	fmt.Printf("> Comenzando job %v en estado %s con acción %v\n", j.ID, j.status, j.Action)
 	TestAction(j.Action)
-	fmt.Printf("Terminando job %v\n", j.ID)
+	fmt.Printf("< Terminando job %v\n", j.ID)
 }
 
 func (j *Job) Stop() {
