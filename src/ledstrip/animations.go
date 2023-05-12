@@ -16,6 +16,17 @@ func (dv *device) startupAnimation() {
 		}
 		time.Sleep(time.Millisecond)
 	}
+
+	// Static final part of animation
+	for {
+		if dv.state == "stop" {
+			break
+		}
+		if err := dv.engine.Render(); err != nil {
+			panic(err)
+		}
+		time.Sleep(time.Millisecond)
+	}
 }
 
 func (dv *device) staticOfficeLights() {
@@ -25,9 +36,16 @@ func (dv *device) staticOfficeLights() {
 		dv.engine.Leds(0)[led] = uint32(0x0fffff)
 	}
 
-	if err := dv.engine.Render(); err != nil {
-		panic(err)
+	for {
+		if dv.state == "stop" {
+			break
+		}
+		if err := dv.engine.Render(); err != nil {
+			panic(err)
+		}
+		time.Sleep(time.Millisecond)
 	}
+
 }
 
 func (dv *device) testAnimation() error {
