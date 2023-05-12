@@ -3,3 +3,4 @@
 - Tutorial para crear una extensión de Google Chrome: https://www.youtube.com/playlist?list=PLC3y8-rFHvwg2-q6Kvw3Tl_4xhxtIaNlY
 - Usar IOS Atajos y raspberry: https://www.thedigitalpictureframe.com/how-to-use-ios-shortcuts-to-control-your-digital-picture-frame-via-iphone-siri-or-your-apple-watch/
 - Usar IOS Atajos y Web: https://www.reddit.com/r/shortcuts/comments/agh6ro/using_javascript_in_your_shortcuts/
+- Library documentation: https://pkg.go.dev/github.com/rpi-ws281x/rpi-ws281x-go#WS2811

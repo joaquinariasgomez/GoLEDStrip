@@ -14,9 +14,17 @@ type Job struct {
 }
 
 type Action struct {
-	Type    string `json:"type"`
-	Command string `json:"command"`
+	Type    ActionTypeEnum `json:"type"`
+	Command string         `json:"command"`
 }
+
+type ActionTypeEnum string
+
+const (
+	Startup       ActionTypeEnum = "startup"
+	SetMode       ActionTypeEnum = "set-mode"
+	SetBrightness ActionTypeEnum = "set-brightness"
+)
 
 func (j *Job) Create(a Action) {
 	j.status = "waiting"
@@ -33,7 +41,7 @@ func (j *Job) Start() {
 	j.status = "running"
 
 	fmt.Printf("> Comenzando job %v en estado %s con acción %v\n", j.ID, j.status, j.Action)
-	TestAction(j.Action)
+	StartAction(j.Action)
 	fmt.Printf("< Terminando job %v\n", j.ID)
 }
 

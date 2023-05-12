@@ -1,8 +1,8 @@
 package ledstrip
 
 import (
+	"goledserver/src/constants"
 	"sync"
-	"time"
 )
 
 var deviceLock = &sync.Mutex{}
@@ -21,105 +21,44 @@ type modeEnum string
 
 const (
 	OnlyBack ledDispEnum = "onlyback"
-	OnlySide ledDispEnum = "onlysides"
 	Full     ledDispEnum = "full"
 )
 
 const (
-	Wave  modeEnum = "wave"
-	Pulse modeEnum = "pulse"
+	Static modeEnum = "static"
+	Pulse  modeEnum = "pulse"
+	Wave   modeEnum = "wave"
 )
 
 type device struct {
-	engine        wsEngine
-	isInitialized bool
-	state         string
-	ledDisp       ledDispEnum
-	currentMode   modeEnum
+	engine         wsEngine
+	isInitialized  bool
+	state          string
+	ledDisp        ledDispEnum
+	mode           modeEnum
+	currBrightness int
 }
 
-func (dv *device) testAnimation() error {
-	dv.state = "running"
-
-	startLed := 0
-	endLed := len(dv.engine.Leds(0)) - 1
-	switch dv.ledDisp {
-	case OnlyBack:
-		startLed = 20
-		endLed -= 20
+func (dv *device) decreaseBrightness() {
+	// This will decrease brightness by 50, for example
+	decreaseAmount := 50
+	if dv.currBrightness-decreaseAmount <= 0 {
+		dv.currBrightness = 0
+	} else {
+		dv.currBrightness -= decreaseAmount
 	}
-
-	for led := startLed; led <= endLed; led++ {
-		dv.engine.Leds(0)[led] = uint32(0x0000ff)
-		/*if err := dv.engine.Render(); err != nil {
-			return err
-		}*/
-		if dv.state == "stop" {
-			break
-		}
-		time.Sleep(time.Millisecond)
-	}
-
-	return nil
+	dv.engine.SetBrightness(0, dv.currBrightness)
 }
 
-func (dv *device) waveAnimation() error {
-	startLed := 0
-	endLed := len(dv.engine.Leds(0)) - 1
-	switch dv.ledDisp {
-	case OnlyBack:
-		startLed = 20
-		endLed -= 20
+func (dv *device) increaseBrightness() {
+	// This will increase brightness by 50, for example
+	increaseAmount := 50
+	if dv.currBrightness+increaseAmount >= constants.MAX_BRIGHTNESS {
+		dv.currBrightness = constants.MAX_BRIGHTNESS
+	} else {
+		dv.currBrightness += increaseAmount
 	}
-
-	for led := startLed; led <= endLed; led++ {
-		dv.engine.Leds(0)[led] = uint32(0x0000ff)
-		// dv.engine.Leds(0)[led] = uint32(0xffffff)
-		if err := dv.engine.Render(); err != nil {
-			return err
-		}
-		time.Sleep(25 * time.Millisecond)
-	}
-
-	return nil
-}
-
-func (dv *device) breathingAnimation() error {
-	startLed := 0
-	endLed := len(dv.engine.Leds(0)) - 1
-	switch dv.ledDisp {
-	case OnlyBack:
-		startLed = 80
-		endLed -= 80
-	}
-
-	minBright := 100
-	maxBright := 255
-	color := uint32(0xffffff)
-	// black := uint32(0x0)
-	// otherColor := uint32(0xffff00)
-	for led := startLed; led <= endLed; led++ {
-		dv.engine.Leds(0)[led] = color
-	}
-
-	for {
-		for bright := minBright; bright <= maxBright; bright++ {
-			dv.engine.SetBrightness(0, bright)
-			if err := dv.engine.Render(); err != nil {
-				return err
-			}
-			time.Sleep(time.Millisecond)
-		}
-		for bright := maxBright; bright >= minBright; bright-- {
-			dv.engine.SetBrightness(0, bright)
-			if err := dv.engine.Render(); err != nil {
-				return err
-			}
-			time.Sleep(time.Millisecond)
-		}
-	}
-
-	return nil
+	dv.engine.SetBrightness(0, dv.currBrightness)
 }
 
 var deviceInstance *device
