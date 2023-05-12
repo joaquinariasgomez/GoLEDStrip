@@ -18,6 +18,7 @@ func (e *execution) StartTask(a Action) {
 	// The flow for this action will be different
 	if a.Type == SetBrightness {
 		fmt.Println("Set brightness task")
+		StartAction(a)
 		// functions.BrightnessAction(a) -> Que dentro de functions se interprete la acción y se hable directamente con device
 		// Idea: crear un job al que no se le va a esperar ni nada para settear el brightness
 	} else {

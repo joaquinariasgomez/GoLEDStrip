@@ -5,7 +5,7 @@ import "time"
 func (dv *device) startupAnimation() {
 	dv.state = "running"
 
-	for led := 0; led < len(dv.engine.Leds(0))-1; led++ {
+	for led := 0; led < len(dv.engine.Leds(0)); led++ {
 		if dv.state == "stop" {
 			break
 		}
@@ -21,7 +21,7 @@ func (dv *device) startupAnimation() {
 func (dv *device) staticOfficeLights() {
 	dv.state = "running"
 
-	for led := 0; led < len(dv.engine.Leds(0))-1; led++ {
+	for led := 0; led < len(dv.engine.Leds(0)); led++ {
 		dv.engine.Leds(0)[led] = uint32(0x0fffff)
 	}
 
