@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"goledserver/src/constants"
 	"strconv"
+	"strings"
 	"sync"
 )
 
@@ -43,11 +44,13 @@ type device struct {
 }
 
 func (dv *device) setColor(c string) {
-	ui32c, err := strconv.ParseUint(c, 10, 32)
+	// Remove 0x preffix
+	cleanC := strings.Replace(c, "0x", "", -1)
+	ui32c, err := strconv.ParseUint(cleanC, 16, 32)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("String %v convertido a color es %v", c, uint32(ui32c))
+	fmt.Printf("String %v convertido a color es %v\n", c, uint32(ui32c))
 	dv.currColor = uint32(ui32c)
 }
 
