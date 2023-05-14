@@ -8,7 +8,7 @@ import "time"
 // en el brillo de los LEDs, etc.
 
 const (
-	WarmWhiteColor = uint32(0xFDF4DC)
+	WarmWhiteColor = uint32(0xfdf4dc)
 )
 
 /*=================== FUNCIONES PRIVADAS ===================*/
