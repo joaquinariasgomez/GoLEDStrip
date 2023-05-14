@@ -24,7 +24,7 @@ func StartDevice() {
 	}
 
 	// Default config for device
-	dev.ledDisp = Full
+	dev.ledDisposition = Full
 	dev.mode = Static
 	dev.currBrightness = MAX_BRIGHTNESS
 

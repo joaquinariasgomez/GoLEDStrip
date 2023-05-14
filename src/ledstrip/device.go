@@ -20,7 +20,7 @@ type ledDispEnum string
 type modeEnum string
 
 const (
-	OnlyBack ledDispEnum = "onlyback"
+	OnlyBack ledDispEnum = "onlyBack"
 	Full     ledDispEnum = "full"
 )
 
@@ -34,7 +34,7 @@ type device struct {
 	engine         wsEngine
 	isInitialized  bool
 	state          string
-	ledDisp        ledDispEnum
+	ledDisposition ledDispEnum
 	mode           modeEnum
 	currBrightness int
 }

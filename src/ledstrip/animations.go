@@ -2,6 +2,32 @@ package ledstrip
 
 import "time"
 
+// Cada animación, indiferentemente de si es una animación o una posición
+// estática, debe acabar con la función staticFinalWaitToStop(), pera esperar
+// a la siguiete animación pero que siga actualizándose con cosas como cambios
+// en el brillo de los LEDs, etc.
+
+const (
+	WarmWhiteColor = uint32(0xFDF4DC)
+)
+
+/*=================== FUNCIONES PRIVADAS ===================*/
+
+func (dv *device) staticFinalWaitToStop() {
+	// Static final part of animation
+	for {
+		if dv.state == "stop" {
+			break
+		}
+		if err := dv.engine.Render(); err != nil {
+			panic(err)
+		}
+		time.Sleep(time.Millisecond)
+	}
+}
+
+/*=================== ANIMACIONES ===================*/
+
 func (dv *device) startupAnimation() {
 	dv.state = "running"
 
@@ -16,67 +42,22 @@ func (dv *device) startupAnimation() {
 		}
 		time.Sleep(time.Millisecond)
 	}
-
-	// Static final part of animation
-	for {
-		if dv.state == "stop" {
-			break
-		}
-		if err := dv.engine.Render(); err != nil {
-			panic(err)
-		}
-		time.Sleep(time.Millisecond)
-	}
+	dv.staticFinalWaitToStop()
 }
 
 func (dv *device) staticOfficeLights() {
 	dv.state = "running"
 
 	for led := 0; led < len(dv.engine.Leds(0)); led++ {
-		dv.engine.Leds(0)[led] = uint32(0x0fffff)
+		dv.engine.Leds(0)[led] = WarmWhiteColor
 	}
-
-	for {
-		if dv.state == "stop" {
-			break
-		}
-		if err := dv.engine.Render(); err != nil {
-			panic(err)
-		}
-		time.Sleep(time.Millisecond)
-	}
-
-}
-
-func (dv *device) testAnimation() error {
-	dv.state = "running"
-
-	startLed := 0
-	endLed := len(dv.engine.Leds(0)) - 1
-	switch dv.ledDisp {
-	case OnlyBack:
-		startLed = 20
-		endLed -= 20
-	}
-
-	for led := startLed; led <= endLed; led++ {
-		dv.engine.Leds(0)[led] = uint32(0x0000ff)
-		/*if err := dv.engine.Render(); err != nil {
-			return err
-		}*/
-		if dv.state == "stop" {
-			break
-		}
-		time.Sleep(time.Millisecond)
-	}
-
-	return nil
+	dv.staticFinalWaitToStop()
 }
 
 func (dv *device) breathingAnimation() error {
 	startLed := 0
 	endLed := len(dv.engine.Leds(0)) - 1
-	switch dv.ledDisp {
+	switch dv.ledDisposition {
 	case OnlyBack:
 		startLed = 80
 		endLed -= 80
@@ -114,7 +95,7 @@ func (dv *device) breathingAnimation() error {
 func (dv *device) waveAnimation() error {
 	startLed := 0
 	endLed := len(dv.engine.Leds(0)) - 1
-	switch dv.ledDisp {
+	switch dv.ledDisposition {
 	case OnlyBack:
 		startLed = 20
 		endLed -= 20
