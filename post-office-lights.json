@@ -1,4 +1,7 @@
 {
-  "type": "set-mode",
-  "command": "office-lights"
+  "type": "change-mode",
+  "command": {
+    "instruction": "office-lights",
+    "args": []
+  }
 }

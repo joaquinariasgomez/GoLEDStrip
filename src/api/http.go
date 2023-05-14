@@ -16,8 +16,11 @@ func setEndpoints(mux *http.ServeMux) {
 func runStartupSequence() {
 	execution := ledstrip.GetExecutionInstance()
 	action := ledstrip.Action{
-		Type:    ledstrip.Startup,
-		Command: "startup-animation",
+		Type: ledstrip.Startup,
+		Command: ledstrip.Command{
+			Instruction: "startup-animation",
+			Args:        nil,
+		},
 	}
 
 	go execution.StartTask(action)

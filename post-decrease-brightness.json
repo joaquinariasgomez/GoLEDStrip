@@ -1,4 +1,7 @@
 {
   "type": "set-brightness",
-  "command": "decrease"
+  "command": {
+    "instruction": "decrease",
+    "args": []
+  }
 }

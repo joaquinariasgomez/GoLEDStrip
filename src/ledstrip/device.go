@@ -1,7 +1,9 @@
 package ledstrip
 
 import (
+	"fmt"
 	"goledserver/src/constants"
+	"strconv"
 	"sync"
 )
 
@@ -36,27 +38,53 @@ type device struct {
 	state          string
 	ledDisposition ledDispEnum
 	mode           modeEnum
+	currColor      uint32
 	currBrightness int
 }
 
-func (dv *device) decreaseBrightness() {
-	// This will decrease brightness by 50, for example
-	decreaseAmount := 50
-	if dv.currBrightness-decreaseAmount <= 0 {
+func (dv *device) setColor(c string) {
+	ui32c, err := strconv.ParseUint(c, 10, 32)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("String %v convertido a color es %v", c, uint32(ui32c))
+	dv.currColor = uint32(ui32c)
+}
+
+func (dv *device) decreaseBrightness(args []string) {
+	// This will decrease brightness by the ammount specified in args
+	decAmount := 25
+	if len(args) > 0 {
+		var err error
+		decAmount, err = strconv.Atoi(args[0])
+		if err != nil {
+			panic(err)
+		}
+	}
+
+	if dv.currBrightness-decAmount <= 0 {
 		dv.currBrightness = 0
 	} else {
-		dv.currBrightness -= decreaseAmount
+		dv.currBrightness -= decAmount
 	}
 	dv.engine.SetBrightness(0, dv.currBrightness)
 }
 
-func (dv *device) increaseBrightness() {
-	// This will increase brightness by 50, for example
-	increaseAmount := 50
-	if dv.currBrightness+increaseAmount >= constants.MAX_BRIGHTNESS {
+func (dv *device) increaseBrightness(args []string) {
+	// This will increase brightness by the ammount specified in args
+	incAmount := 25
+	if len(args) > 0 {
+		var err error
+		incAmount, err = strconv.Atoi(args[0])
+		if err != nil {
+			panic(err)
+		}
+	}
+
+	if dv.currBrightness+incAmount >= constants.MAX_BRIGHTNESS {
 		dv.currBrightness = constants.MAX_BRIGHTNESS
 	} else {
-		dv.currBrightness += increaseAmount
+		dv.currBrightness += incAmount
 	}
 	dv.engine.SetBrightness(0, dv.currBrightness)
 }

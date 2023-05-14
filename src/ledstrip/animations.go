@@ -45,7 +45,7 @@ func (dv *device) startupAnimation() {
 	dv.staticFinalWaitToStop()
 }
 
-func (dv *device) staticOfficeLights() {
+func (dv *device) officeLightsMode() {
 	dv.state = "running"
 
 	for led := 0; led < len(dv.engine.Leds(0)); led++ {

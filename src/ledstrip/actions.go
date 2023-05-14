@@ -48,10 +48,12 @@ func StartAction(a Action) {
 		StartDevice()
 		device := GetDeviceInstance()
 		device.startupAnimation()
-	case SetMode:
+	case ChangeMode:
 		StartModeAction(a)
+	case SetColor:
+		SetColorAction(a)
 	case SetBrightness:
-		StartBrightnessAction(a)
+		SetBrightnessAction(a)
 	}
 }
 
@@ -64,55 +66,39 @@ func StartModeAction(a Action) {
 	// Aqui iria la desencriptación del comando que se quiere ejecutar
 	// Un comando es un JSON, con una serie de parámetros y árbol dentro
 	// Por ahora, lets keep things simple y supongamos que es un string con una orden simple
-	if a.Command == "office-lights" {
-		device.staticOfficeLights()
+	command := a.Command
+	if command.Instruction == OfficeLights {
+		device.officeLightsMode()
+		// TODO: llamar con args: device.officeLightsMode(command.args)
 	}
 }
 
-func StartBrightnessAction(a Action) {
+func SetColorAction(a Action) {
 	device := GetDeviceInstance()
 	if !device.isInitialized {
 		return
 	}
 
-	if a.Command == "decrease" {
-		device.decreaseBrightness()
-	} else if a.Command == "increase" {
-		device.increaseBrightness()
-	}
+	command := a.Command
+	color := string(command.Instruction)
+	device.setColor(color)
 }
 
-func WipeAction() {
+func SetBrightnessAction(a Action) {
 	device := GetDeviceInstance()
 	if !device.isInitialized {
 		return
 	}
 
-	device.waveAnimation()
+	command := a.Command
+	if command.Instruction == Decrease {
+		device.decreaseBrightness(command.Args)
+	} else if command.Instruction == Increase {
+		device.increaseBrightness(command.Args)
+	}
 }
 
 func SetStopState() {
 	device := GetDeviceInstance()
 	device.state = "stop"
-}
-
-func PulsateAction() {
-	device := GetDeviceInstance()
-	if !device.isInitialized {
-		return
-	}
-
-	go device.breathingAnimation()
-}
-
-func ExampleWipe() {
-	// TODO: mover StartDevice() al startup sequence, donde solo sería llamado una vez
-	// Esta función settea la configuración del singleton device, luego no hace falta llamarla por cada método
-	StartDevice()
-	WipeAction()
-}
-
-func ExamplePulsate() {
-	StartDevice()
-	PulsateAction()
 }

@@ -1,7 +1,6 @@
 package ledstrip
 
 import (
-	"fmt"
 	"sync"
 )
 
@@ -16,8 +15,7 @@ func (e *execution) StartTask(a Action) {
 	// First, check what action type is being executed.
 	// If it is "set-brightness", it won't create any jobs.
 	// The flow for this action will be different
-	if a.Type == SetBrightness {
-		fmt.Println("Set brightness task")
+	if a.Type == SetBrightness || a.Type == SetColor {
 		StartAction(a)
 		// functions.BrightnessAction(a) -> Que dentro de functions se interprete la acción y se hable directamente con device
 		// Idea: crear un job al que no se le va a esperar ni nada para settear el brightness

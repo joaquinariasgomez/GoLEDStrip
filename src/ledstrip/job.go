@@ -15,15 +15,30 @@ type Job struct {
 
 type Action struct {
 	Type    ActionTypeEnum `json:"type"`
-	Command string         `json:"command"`
+	Command Command        `json:"command"`
+}
+
+type Command struct {
+	Instruction InstructionTypeEnum `json:"instruction"`
+	Args        []string            `json:"args"`
 }
 
 type ActionTypeEnum string
 
 const (
 	Startup       ActionTypeEnum = "startup"
-	SetMode       ActionTypeEnum = "set-mode"
+	ChangeMode    ActionTypeEnum = "change-mode"
+	SetColor      ActionTypeEnum = "set-color"
 	SetBrightness ActionTypeEnum = "set-brightness"
+)
+
+type InstructionTypeEnum string
+
+const (
+	OfficeLights InstructionTypeEnum = "office-lights"
+	StaticColor  InstructionTypeEnum = "static-color"
+	Increase     InstructionTypeEnum = "increase"
+	Decrease     InstructionTypeEnum = "decrease"
 )
 
 func (j *Job) Create(a Action) {
