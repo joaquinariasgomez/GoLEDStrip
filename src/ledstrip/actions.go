@@ -6,7 +6,7 @@ import (
 	ws2811 "github.com/rpi-ws281x/rpi-ws281x-go"
 )
 
-/* The responsibility of this class will be to decrypt the action and to talk with the device */
+/* The responsibility of this class will be to decode the action and to talk with the device */
 
 func StartDevice() {
 	dev := GetDeviceInstance()
@@ -73,6 +73,8 @@ func StartModeAction(a Action) {
 		// TODO: llamar con args: device.officeLightsMode(command.args)
 	case StaticColor:
 		device.staticColorMode(command.Args)
+	case Rainbow:
+		device.rainbowMode()
 	}
 }
 

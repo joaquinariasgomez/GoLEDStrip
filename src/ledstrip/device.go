@@ -35,7 +35,7 @@ type device struct {
 }
 
 func (dv *device) setColorAsString(c string) {
-	// Remove 0x preffix
+	// Remove 0x prefix
 	cleanC := strings.Replace(c, "0x", "", -1)
 	ui32c, err := strconv.ParseUint(cleanC, 16, 32)
 	if err != nil {
@@ -45,7 +45,7 @@ func (dv *device) setColorAsString(c string) {
 }
 
 func (dv *device) decreaseBrightness(args []string) {
-	// This will decrease brightness by the ammount specified in args
+	// This will decrease brightness by the amount specified in args
 	decAmount := 25
 	if len(args) > 0 {
 		var err error

@@ -1,6 +1,11 @@
 package ledstrip
 
-import "time"
+import (
+	"github.com/go-playground/colors"
+	"goledserver/src/constants"
+	"strconv"
+	"time"
+)
 
 // Cada animación, indiferentemente de si es una animación o una posición
 // estática, debe acabar con la función staticFinalPartWaitToStop(), pera esperar
@@ -33,6 +38,48 @@ func (dv *device) staticFinalPartWaitToStop() {
 			panic(err)
 		}
 		time.Sleep(time.Millisecond)
+	}
+}
+
+func rgbToUint32(rgb *colors.RGBColor) uint32 {
+	hex := rgb.ToHEX().String()
+	cleanHex := hex[1:]
+	ui32c, _ := strconv.ParseUint(cleanHex, 16, 32)
+	return uint32(ui32c)
+}
+
+func getRainbowColor(pos int) uint32 {
+	if pos < 85 {
+		r := pos * 3
+		g := 255 - pos*3
+		b := 0
+		rgb, err := colors.ParseRGB("rgb(" + strconv.Itoa(r) + "," + strconv.Itoa(g) + "," + strconv.Itoa(b) + ")")
+		if err != nil {
+			panic(err)
+		}
+		return rgbToUint32(rgb)
+	} else {
+		if pos < 170 {
+			pos -= 85
+			r := 255 - pos*3
+			g := 0
+			b := pos * 3
+			rgb, err := colors.ParseRGB("rgb(" + strconv.Itoa(r) + "," + strconv.Itoa(g) + "," + strconv.Itoa(b) + ")")
+			if err != nil {
+				panic(err)
+			}
+			return rgbToUint32(rgb)
+		} else {
+			pos -= 170
+			r := 0
+			g := pos * 3
+			b := 255 - pos*3
+			rgb, err := colors.ParseRGB("rgb(" + strconv.Itoa(r) + "," + strconv.Itoa(g) + "," + strconv.Itoa(b) + ")")
+			if err != nil {
+				panic(err)
+			}
+			return rgbToUint32(rgb)
+		}
 	}
 }
 
@@ -74,6 +121,26 @@ func (dv *device) staticColorMode(args []string) {
 
 	if len(args) > 0 {
 		dv.setColorAsString(args[0])
+	}
+
+	dv.staticFinalPartWaitToStop()
+}
+
+func (dv *device) rainbowMode() {
+	dv.state = "running"
+
+	for i := 0; i <= 255; i++ {
+		for led := 0; led < len(dv.engine.Leds(0)); led++ {
+			dv.engine.Leds(0)[led] = getRainbowColor((led*256/constants.MAX_LEDS + i) & 255)
+		}
+		if dv.state == "stop" {
+			break
+		}
+
+		if err := dv.engine.Render(); err != nil {
+			panic(err)
+		}
+		time.Sleep(20 * time.Millisecond / 1000)
 	}
 
 	dv.staticFinalPartWaitToStop()
