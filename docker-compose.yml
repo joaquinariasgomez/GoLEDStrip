@@ -1,6 +1,7 @@
 version: '3.8'
 services:
   db:
+    platform: linux/amd64 # This is for compatibility with Raspberry Pi
     image: mongo
     container_name: mongocontainer
     ports:
