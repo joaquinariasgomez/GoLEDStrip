@@ -1,10 +1,11 @@
 package ledstrip
 
 import (
-	"github.com/go-playground/colors"
 	"goledserver/src/constants"
 	"strconv"
 	"time"
+
+	"github.com/go-playground/colors"
 )
 
 // Cada animación, indiferentemente de si es una animación o una posición
@@ -129,7 +130,8 @@ func (dv *device) staticColorMode(args []string) {
 func (dv *device) rainbowMode() {
 	dv.state = "running"
 
-	for i := 0; i <= 255; i++ {
+	iterations := 2
+	for i := 0; i <= 255*iterations; i++ {
 		for led := 0; led < len(dv.engine.Leds(0)); led++ {
 			dv.engine.Leds(0)[led] = getRainbowColor((led*256/constants.MAX_LEDS + i) & 255)
 		}
