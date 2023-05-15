@@ -1,7 +1,6 @@
 package ledstrip
 
 import (
-	"fmt"
 	"goledserver/src/constants"
 	"strconv"
 	"strings"
@@ -42,7 +41,6 @@ func (dv *device) setColor(c string) {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("String %v convertido a color es %v\n", c, uint32(ui32c))
 	dv.currColor = uint32(ui32c)
 }
 
