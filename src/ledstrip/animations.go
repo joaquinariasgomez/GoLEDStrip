@@ -22,10 +22,12 @@ func (dv *device) staticFinalPartWaitToStop() {
 		if dv.state == "stop" {
 			break
 		}
+
 		// Update color
 		for led := 0; led < len(dv.engine.Leds(0)); led++ {
 			dv.engine.Leds(0)[led] = dv.currColor
 		}
+
 		// Render
 		if err := dv.engine.Render(); err != nil {
 			panic(err)
@@ -44,7 +46,7 @@ func (dv *device) startupAnimation() {
 			break
 		}
 
-		dv.engine.Leds(0)[led] = uint32(0xffffff)
+		dv.engine.Leds(0)[led] = WhiteColor // All the startup animation will be in White color
 		if err := dv.engine.Render(); err != nil {
 			panic(err)
 		}
