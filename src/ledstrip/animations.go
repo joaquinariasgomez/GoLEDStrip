@@ -8,7 +8,10 @@ import "time"
 // en el brillo de los LEDs, etc.
 
 const (
+	WhiteColor     = uint32(0xffffff)
 	WarmWhiteColor = uint32(0xfdf4dc)
+	RedColor       = uint32(0xff0000)
+	BlackColor     = uint32(0x000000)
 )
 
 /*=================== FUNCIONES PRIVADAS ===================*/
@@ -53,8 +56,9 @@ func (dv *device) startupAnimation() {
 func (dv *device) officeLightsMode() {
 	dv.state = "running"
 
+	dv.currColor = WarmWhiteColor
 	for led := 0; led < len(dv.engine.Leds(0)); led++ {
-		dv.engine.Leds(0)[led] = WarmWhiteColor
+		dv.engine.Leds(0)[led] = dv.currColor
 	}
 	if err := dv.engine.Render(); err != nil {
 		panic(err)
@@ -67,7 +71,7 @@ func (dv *device) staticColorMode(args []string) {
 	dv.state = "running"
 
 	if len(args) > 0 {
-		dv.setColor(args[0])
+		dv.setColorAsString(args[0])
 	}
 
 	dv.staticFinalPartWaitToStop()

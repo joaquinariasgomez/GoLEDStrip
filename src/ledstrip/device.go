@@ -34,7 +34,7 @@ type device struct {
 	currBrightness int
 }
 
-func (dv *device) setColor(c string) {
+func (dv *device) setColorAsString(c string) {
 	// Remove 0x preffix
 	cleanC := strings.Replace(c, "0x", "", -1)
 	ui32c, err := strconv.ParseUint(cleanC, 16, 32)

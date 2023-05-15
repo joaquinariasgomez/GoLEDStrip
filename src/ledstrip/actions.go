@@ -25,7 +25,7 @@ func StartDevice() {
 
 	// Default config for device
 	dev.ledDisposition = Full
-	dev.currColor = uint32(0xff0000) // Red
+	dev.currColor = WhiteColor
 	dev.currBrightness = MAX_BRIGHTNESS
 
 	dev.engine = engine
@@ -84,7 +84,7 @@ func SetColorAction(a Action) {
 
 	command := a.Command
 	color := string(command.Instruction)
-	device.setColor(color)
+	device.setColorAsString(color)
 }
 
 func SetBrightnessAction(a Action) {
