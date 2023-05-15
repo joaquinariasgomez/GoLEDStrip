@@ -25,7 +25,7 @@ func StartDevice() {
 
 	// Default config for device
 	dev.ledDisposition = Full
-	dev.mode = Static
+	dev.currColor = uint32(0xff0000) // Red
 	dev.currBrightness = MAX_BRIGHTNESS
 
 	dev.engine = engine
@@ -67,9 +67,12 @@ func StartModeAction(a Action) {
 	// Un comando es un JSON, con una serie de parámetros y árbol dentro
 	// Por ahora, lets keep things simple y supongamos que es un string con una orden simple
 	command := a.Command
-	if command.Instruction == OfficeLights {
+	switch command.Instruction {
+	case OfficeLights:
 		device.officeLightsMode()
 		// TODO: llamar con args: device.officeLightsMode(command.args)
+	case StaticColor:
+		device.staticColorMode(command.Args)
 	}
 }
 

@@ -20,17 +20,10 @@ type wsEngine interface {
 }
 
 type ledDispEnum string
-type modeEnum string
 
 const (
 	OnlyBack ledDispEnum = "onlyBack"
 	Full     ledDispEnum = "full"
-)
-
-const (
-	Static modeEnum = "static"
-	Pulse  modeEnum = "pulse"
-	Wave   modeEnum = "wave"
 )
 
 type device struct {
@@ -38,7 +31,6 @@ type device struct {
 	isInitialized  bool
 	state          string
 	ledDisposition ledDispEnum
-	mode           modeEnum
 	currColor      uint32
 	currBrightness int
 }

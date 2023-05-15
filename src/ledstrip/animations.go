@@ -54,6 +54,19 @@ func (dv *device) officeLightsMode() {
 	dv.staticFinalWaitToStop()
 }
 
+func (dv *device) staticColorMode(args []string) {
+	dv.state = "running"
+
+	if len(args) > 0 {
+		dv.setColor(args[0])
+	}
+
+	for led := 0; led < len(dv.engine.Leds(0)); led++ {
+		dv.engine.Leds(0)[led] = dv.currColor
+	}
+	dv.staticFinalWaitToStop()
+}
+
 func (dv *device) breathingAnimation() error {
 	startLed := 0
 	endLed := len(dv.engine.Leds(0)) - 1
