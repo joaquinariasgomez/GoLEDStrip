@@ -3,7 +3,7 @@ package ledstrip
 import "time"
 
 // Cada animación, indiferentemente de si es una animación o una posición
-// estática, debe acabar con la función staticFinalWaitToStop(), pera esperar
+// estática, debe acabar con la función staticFinalPartWaitToStop(), pera esperar
 // a la siguiete animación pero que siga actualizándose con cosas como cambios
 // en el brillo de los LEDs, etc.
 
@@ -13,12 +13,17 @@ const (
 
 /*=================== FUNCIONES PRIVADAS ===================*/
 
-func (dv *device) staticFinalWaitToStop() {
+func (dv *device) staticFinalPartWaitToStop() {
 	// Static final part of animation
 	for {
 		if dv.state == "stop" {
 			break
 		}
+		// Update color
+		for led := 0; led < len(dv.engine.Leds(0)); led++ {
+			dv.engine.Leds(0)[led] = dv.currColor
+		}
+		// Render
 		if err := dv.engine.Render(); err != nil {
 			panic(err)
 		}
@@ -42,7 +47,7 @@ func (dv *device) startupAnimation() {
 		}
 		time.Sleep(time.Millisecond)
 	}
-	dv.staticFinalWaitToStop()
+	dv.staticFinalPartWaitToStop()
 }
 
 func (dv *device) officeLightsMode() {
@@ -51,7 +56,11 @@ func (dv *device) officeLightsMode() {
 	for led := 0; led < len(dv.engine.Leds(0)); led++ {
 		dv.engine.Leds(0)[led] = WarmWhiteColor
 	}
-	dv.staticFinalWaitToStop()
+	if err := dv.engine.Render(); err != nil {
+		panic(err)
+	}
+
+	dv.staticFinalPartWaitToStop()
 }
 
 func (dv *device) staticColorMode(args []string) {
@@ -61,10 +70,7 @@ func (dv *device) staticColorMode(args []string) {
 		dv.setColor(args[0])
 	}
 
-	for led := 0; led < len(dv.engine.Leds(0)); led++ {
-		dv.engine.Leds(0)[led] = dv.currColor
-	}
-	dv.staticFinalWaitToStop()
+	dv.staticFinalPartWaitToStop()
 }
 
 func (dv *device) breathingAnimation() error {
