@@ -2,6 +2,7 @@ package ledstrip
 
 import (
 	. "goledserver/src/constants"
+	"goledserver/src/utils"
 
 	ws2811 "github.com/rpi-ws281x/rpi-ws281x-go"
 )
@@ -73,8 +74,8 @@ func StartModeAction(a Action) {
 		// TODO: llamar con args: device.officeLightsMode(command.args)
 	case StaticColor:
 		device.staticColorMode(command.Args)
-	case Rainbow:
-		device.rainbowMode()
+	case RainbowBalls:
+		device.rainbowBallsMode()
 	}
 }
 
@@ -85,8 +86,8 @@ func SetColorAction(a Action) {
 	}
 
 	command := a.Command
-	color := string(command.Instruction)
-	device.setColorAsString(color)
+	colorAsStr := string(command.Instruction)
+	device.currColor = utils.StringToUint32(colorAsStr)
 }
 
 func SetBrightnessAction(a Action) {

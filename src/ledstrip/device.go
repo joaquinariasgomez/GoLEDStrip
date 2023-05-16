@@ -3,7 +3,6 @@ package ledstrip
 import (
 	"goledserver/src/constants"
 	"strconv"
-	"strings"
 	"sync"
 )
 
@@ -32,16 +31,6 @@ type device struct {
 	ledDisposition ledDispEnum
 	currColor      uint32
 	currBrightness int
-}
-
-func (dv *device) setColorAsString(c string) {
-	// Remove 0x prefix
-	cleanC := strings.Replace(c, "0x", "", -1)
-	ui32c, err := strconv.ParseUint(cleanC, 16, 32)
-	if err != nil {
-		panic(err)
-	}
-	dv.currColor = uint32(ui32c)
 }
 
 func (dv *device) decreaseBrightness(args []string) {

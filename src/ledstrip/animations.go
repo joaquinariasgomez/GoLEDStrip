@@ -2,10 +2,8 @@ package ledstrip
 
 import (
 	"goledserver/src/constants"
-	"strconv"
+	"goledserver/src/utils"
 	"time"
-
-	"github.com/go-playground/colors"
 )
 
 // Cada animación, indiferentemente de si es una animación o una posición
@@ -42,48 +40,6 @@ func (dv *device) staticFinalPartWaitToStop() {
 	}
 }
 
-func rgbToUint32(rgb *colors.RGBColor) uint32 {
-	hex := rgb.ToHEX().String()
-	cleanHex := hex[1:]
-	ui32c, _ := strconv.ParseUint(cleanHex, 16, 32)
-	return uint32(ui32c)
-}
-
-func getRainbowColor(pos int) uint32 {
-	if pos < 85 {
-		r := pos * 3
-		g := 255 - pos*3
-		b := 0
-		rgb, err := colors.ParseRGB("rgb(" + strconv.Itoa(r) + "," + strconv.Itoa(g) + "," + strconv.Itoa(b) + ")")
-		if err != nil {
-			panic(err)
-		}
-		return rgbToUint32(rgb)
-	} else {
-		if pos < 170 {
-			pos -= 85
-			r := 255 - pos*3
-			g := 0
-			b := pos * 3
-			rgb, err := colors.ParseRGB("rgb(" + strconv.Itoa(r) + "," + strconv.Itoa(g) + "," + strconv.Itoa(b) + ")")
-			if err != nil {
-				panic(err)
-			}
-			return rgbToUint32(rgb)
-		} else {
-			pos -= 170
-			r := 0
-			g := pos * 3
-			b := 255 - pos*3
-			rgb, err := colors.ParseRGB("rgb(" + strconv.Itoa(r) + "," + strconv.Itoa(g) + "," + strconv.Itoa(b) + ")")
-			if err != nil {
-				panic(err)
-			}
-			return rgbToUint32(rgb)
-		}
-	}
-}
-
 /*=================== ANIMACIONES ===================*/
 
 func (dv *device) startupAnimation() {
@@ -110,8 +66,22 @@ func (dv *device) officeLightsMode() {
 	for led := 0; led < len(dv.engine.Leds(0)); led++ {
 		dv.engine.Leds(0)[led] = dv.currColor
 	}
-	if err := dv.engine.Render(); err != nil {
-		panic(err)
+
+	// Fade in part
+	for bright := 50; bright <= constants.MAX_BRIGHTNESS; bright++ {
+		dv.engine.SetBrightness(0, bright)
+		if err := dv.engine.Render(); err != nil {
+			panic(err)
+		}
+		time.Sleep(time.Millisecond / 2)
+	}
+	// Fade out
+	for bright := constants.MAX_BRIGHTNESS; bright >= dv.currBrightness; bright-- {
+		dv.engine.SetBrightness(0, bright)
+		if err := dv.engine.Render(); err != nil {
+			panic(err)
+		}
+		time.Sleep(time.Millisecond / 2)
 	}
 
 	dv.staticFinalPartWaitToStop()
@@ -121,19 +91,41 @@ func (dv *device) staticColorMode(args []string) {
 	dv.state = "running"
 
 	if len(args) > 0 {
-		dv.setColorAsString(args[0])
+		dv.currColor = utils.StringToUint32(args[0])
 	}
 
 	dv.staticFinalPartWaitToStop()
 }
 
-func (dv *device) rainbowMode() {
+func (dv *device) rainbowBallsMode() {
+	dv.state = "running"
+
+	it := 0
+	for {
+		for led := 0; led < len(dv.engine.Leds(0)); led++ {
+			dv.engine.Leds(0)[led] = utils.GetRainbowBallColor((led*256/constants.MAX_LEDS + it) & 255)
+		}
+		if dv.state == "stop" {
+			break
+		}
+
+		if err := dv.engine.Render(); err != nil {
+			panic(err)
+		}
+		time.Sleep(20 * time.Millisecond / 1000)
+		it++
+	}
+
+	dv.staticFinalPartWaitToStop()
+}
+
+func (dv *device) rainbowWipeMode() {
 	dv.state = "running"
 
 	iterations := 2
 	for i := 0; i <= 255*iterations; i++ {
 		for led := 0; led < len(dv.engine.Leds(0)); led++ {
-			dv.engine.Leds(0)[led] = getRainbowColor((led*256/constants.MAX_LEDS + i) & 255)
+			dv.engine.Leds(0)[led] = utils.GetRainbowBallColor((led*256/constants.MAX_LEDS + i) & 255)
 		}
 		if dv.state == "stop" {
 			break

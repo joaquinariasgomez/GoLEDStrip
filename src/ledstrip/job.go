@@ -37,7 +37,8 @@ type InstructionTypeEnum string
 const (
 	OfficeLights InstructionTypeEnum = "office-lights"
 	StaticColor  InstructionTypeEnum = "static-color"
-	Rainbow      InstructionTypeEnum = "rainbow"
+	RainbowWipe  InstructionTypeEnum = "rainbow wipe"
+	RainbowBalls InstructionTypeEnum = "rainbow balls"
 	Increase     InstructionTypeEnum = "increase"
 	Decrease     InstructionTypeEnum = "decrease"
 )
