@@ -81,7 +81,7 @@ func (dv *device) officeLightsMode() {
 		if err := dv.engine.Render(); err != nil {
 			panic(err)
 		}
-		time.Sleep(time.Millisecond / 2)
+		time.Sleep(time.Millisecond)
 	}
 
 	dv.staticFinalPartWaitToStop()
