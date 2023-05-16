@@ -68,15 +68,15 @@ func (dv *device) officeLightsMode() {
 	}
 
 	// Fade in part
-	for bright := 50; bright <= constants.MAX_BRIGHTNESS; bright++ {
+	for bright := 50; bright <= constants.MAX_BRIGHTNESS; bright += 2 {
 		dv.engine.SetBrightness(0, bright)
 		if err := dv.engine.Render(); err != nil {
 			panic(err)
 		}
-		time.Sleep(time.Millisecond / 2)
+		time.Sleep(time.Millisecond / 10)
 	}
 	// Fade out
-	for bright := constants.MAX_BRIGHTNESS; bright >= dv.currBrightness; bright-- {
+	for bright := constants.MAX_BRIGHTNESS - 1; bright >= dv.currBrightness; bright-- {
 		dv.engine.SetBrightness(0, bright)
 		if err := dv.engine.Render(); err != nil {
 			panic(err)
