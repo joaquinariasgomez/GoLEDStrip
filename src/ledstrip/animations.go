@@ -111,7 +111,7 @@ func (dv *device) rainbowBallsMode() {
 		if err := dv.engine.Render(); err != nil {
 			panic(err)
 		}
-		time.Sleep(20 * time.Millisecond / 1000)
+		time.Sleep(20 * time.Millisecond)
 	}
 
 	dv.staticFinalPartWaitToStop()
@@ -131,7 +131,7 @@ func (dv *device) rainbowContinuousMode() {
 		if err := dv.engine.Render(); err != nil {
 			panic(err)
 		}
-		time.Sleep(20 * time.Millisecond / 1000)
+		time.Sleep(20 * time.Millisecond)
 	}
 
 	dv.staticFinalPartWaitToStop()
