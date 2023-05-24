@@ -35,12 +35,12 @@ const (
 type InstructionTypeEnum string
 
 const (
-	OfficeLights InstructionTypeEnum = "office-lights"
-	StaticColor  InstructionTypeEnum = "static-color"
-	RainbowWipe  InstructionTypeEnum = "rainbow wipe"
-	RainbowBalls InstructionTypeEnum = "rainbow balls"
-	Increase     InstructionTypeEnum = "increase"
-	Decrease     InstructionTypeEnum = "decrease"
+	OfficeLights      InstructionTypeEnum = "office-lights"
+	StaticColor       InstructionTypeEnum = "static-color"
+	RainbowBalls      InstructionTypeEnum = "rainbow balls"
+	RainbowContinuous InstructionTypeEnum = "rainbow continuous"
+	Increase          InstructionTypeEnum = "increase"
+	Decrease          InstructionTypeEnum = "decrease"
 )
 
 func (j *Job) Create(a Action) {

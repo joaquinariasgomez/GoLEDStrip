@@ -76,6 +76,8 @@ func StartModeAction(a Action) {
 		device.staticColorMode(command.Args)
 	case RainbowBalls:
 		device.rainbowBallsMode()
+	case RainbowContinuous:
+		device.rainbowContinuousMode()
 	}
 }
 

@@ -100,8 +100,7 @@ func (dv *device) staticColorMode(args []string) {
 func (dv *device) rainbowBallsMode() {
 	dv.state = "running"
 
-	it := 0
-	for {
+	for it := 0; ; it++ {
 		for led := 0; led < len(dv.engine.Leds(0)); led++ {
 			dv.engine.Leds(0)[led] = utils.GetRainbowBallColor((led*256/constants.MAX_LEDS + it) & 255)
 		}
@@ -113,19 +112,17 @@ func (dv *device) rainbowBallsMode() {
 			panic(err)
 		}
 		time.Sleep(20 * time.Millisecond / 1000)
-		it++
 	}
 
 	dv.staticFinalPartWaitToStop()
 }
 
-func (dv *device) rainbowWipeMode() {
+func (dv *device) rainbowContinuousMode() {
 	dv.state = "running"
 
-	iterations := 2
-	for i := 0; i <= 255*iterations; i++ {
+	for it := 0; ; it++ {
 		for led := 0; led < len(dv.engine.Leds(0)); led++ {
-			dv.engine.Leds(0)[led] = utils.GetRainbowBallColor((led*256/constants.MAX_LEDS + i) & 255)
+			dv.engine.Leds(0)[led] = utils.GetRainbowBallColor((it + led) & 255)
 		}
 		if dv.state == "stop" {
 			break
