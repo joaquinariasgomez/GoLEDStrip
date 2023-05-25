@@ -40,6 +40,16 @@ func (dv *device) staticFinalPartWaitToStop() {
 	}
 }
 
+func (dv *device) shutdownLights() {
+	for led := 0; led < len(dv.engine.Leds(0)); led++ {
+		dv.engine.Leds(0)[led] = BlackColor
+	}
+	// Render
+	if err := dv.engine.Render(); err != nil {
+		panic(err)
+	}
+}
+
 /*=================== ANIMACIONES ===================*/
 
 func (dv *device) startupAnimation() {

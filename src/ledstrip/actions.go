@@ -38,6 +38,7 @@ func StartDevice() {
 func ShutdownDevice() {
 	device := GetDeviceInstance()
 	if device.isInitialized {
+		device.shutdownLights()
 		device.engine.Fini()
 		device.isInitialized = false
 	}
