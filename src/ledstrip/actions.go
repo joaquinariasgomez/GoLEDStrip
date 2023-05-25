@@ -49,6 +49,8 @@ func StartAction(a Action) {
 		StartDevice()
 		device := GetDeviceInstance()
 		device.startupAnimation()
+	case Shutdown:
+		ShutdownDevice()
 	case ChangeMode:
 		StartModeAction(a)
 	case SetColor:

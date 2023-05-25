@@ -27,6 +27,7 @@ type ActionTypeEnum string
 
 const (
 	Startup       ActionTypeEnum = "startup"
+	Shutdown      ActionTypeEnum = "shutdown"
 	ChangeMode    ActionTypeEnum = "change-mode"
 	SetColor      ActionTypeEnum = "set-color"
 	SetBrightness ActionTypeEnum = "set-brightness"
