@@ -41,6 +41,13 @@ func (dv *device) staticFinalPartWaitToStop() {
 }
 
 func (dv *device) shutdownLights() {
+	for bright := dv.currBrightness; bright >= 0; bright-- {
+		dv.engine.SetBrightness(0, bright)
+		if err := dv.engine.Render(); err != nil {
+			panic(err)
+		}
+		time.Sleep(time.Millisecond)
+	}
 	for led := 0; led < len(dv.engine.Leds(0)); led++ {
 		dv.engine.Leds(0)[led] = BlackColor
 	}
